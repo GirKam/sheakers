@@ -1,19 +1,13 @@
 import React from 'react';
 import axios from 'axios'
-import { Route } from 'react-router-dom';
-
 import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
 import Orders from './pages/Orders';
-
-
+import { Routes, Route } from "react-router-dom";
 
 export const AppContext = React.createContext({});
-
-
-
 
 function App() {
 
@@ -30,8 +24,8 @@ function App() {
   const [isLodaing, setIsLodaing] = React.useState(true);
 
 
-  React.useEffect(()=>{
-    async function fetchData (){
+  React.useEffect(() => {
+    async function fetchData () {
       
       const CartResponse = await  axios.get('https://6558be74e93ca47020a9ac36.mockapi.io/cart')
       const FavoritesResponse = await axios.get('https://6565d6d1eb8bb4b70ef26f35.mockapi.io/favorites')      
@@ -103,28 +97,37 @@ function App() {
 
     <Header onClickCart ={()=> setCardOpened(true)} /> 
 
-    <Route path="/" exact>
-      <Home
-        items ={items}
-        cartItems = {cartItems}
-        searchValue = {searchValue}
-        setSearchValue = {setSearchValue}
-        onChangeSearchValue ={onChangeSearchValue}
-        onAddToFavorite = {onAddToFavorite}
-        addToCart = {addToCart}
-        isLodaing={isLodaing}
-        />
-    </Route>
+     <Routes>
+       <Route path="/" element={
+         <Home
+             items ={items}
+             cartItems = {cartItems}
+             searchValue = {searchValue}
+             setSearchValue = {setSearchValue}
+             onChangeSearchValue ={onChangeSearchValue}
+             onAddToFavorite = {onAddToFavorite}
+             addToCart = {addToCart}
+             isLodaing={isLodaing}
+         />
+       }>
 
-    <Route path="/favorites" exact>
-      <Favorites
-        // onAddToFavorite={onAddToFavorite}
-      />
-    </Route> 
+       </Route>
 
-    <Route path="/orders" exact>
-      <Orders/>
-    </Route>       
+       <Route path="/favorites" element={
+         <Favorites
+             // onAddToFavorite={onAddToFavorite}
+         />
+       }>
+       </Route>
+
+       <Route path="/orders" element={
+         <Orders/>
+       }>
+
+       </Route>
+
+     </Routes>
+
     </div>
   </AppContext.Provider>
   );    
